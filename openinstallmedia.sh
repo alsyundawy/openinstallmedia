@@ -153,7 +153,7 @@ Input_Volume()
 		volume_name="${volume_path#/Volumes/}"
 	
 		if [[ ! "$volume_name" == com.apple* ]]; then
-			echo -e ${text_message}"/     ${volume_name}"${erase_style} | sort -V
+			echo -e ${text_message}"/     ${volume_name}"${erase_style} | sort
 		fi
 
 	done
