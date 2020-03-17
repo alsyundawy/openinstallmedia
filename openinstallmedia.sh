@@ -53,7 +53,7 @@ Output_Off()
 
 Check_Environment()
 {
-	echo -e ${text_progress}"> Checking system environment."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking system environment."${erase_style}
 
 	if [ -d /Install\ *.app ]; then
 		environment="installer"
@@ -63,27 +63,27 @@ Check_Environment()
 		environment="system"
 	fi
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Checked system environment."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Checked system environment."${erase_style}
 }
 
 Check_Root()
 {
-	echo -e ${text_progress}"> Checking for root permissions."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for root permissions."${erase_style}
 
 	if [[ $environment == "installer" ]]; then
 		root_check="passed"
-		echo -e ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
+		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
 	else
 
 		if [[ $(whoami) == "root" && $environment == "system" ]]; then
 			root_check="passed"
-			echo -e ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
+			echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
 		fi
 
 		if [[ ! $(whoami) == "root" && $environment == "system" ]]; then
 			root_check="failed"
-			echo -e ${text_error}"- Root permissions check failed."${erase_style}
-			echo -e ${text_message}"/ Run this tool with root permissions."${erase_style}
+			echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Root permissions check failed."${erase_style}
+			echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with root permissions."${erase_style}
 
 			Input_On
 			exit
@@ -94,14 +94,14 @@ Check_Root()
 
 Input_Installer()
 {
-	echo -e ${text_message}"/ What installer would you like to use?"${erase_style}
-	echo -e ${text_message}"/ Input an installer path."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ What installer would you like to use?"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Input an installer path."${erase_style}
 
 	if [[ "$installer_application_path" ]]; then
-		echo -e "/ $installer_application_path"${erase_style}
+		echo -e $(date "+%b %m %H:%M:%S") "/ $installer_application_path"${erase_style}
 	else
 		Input_On
-		read -e -p "/ " installer_application_path
+		read -e -p "$(date "+%b %m %H:%M:%S") / " installer_application_path
 		Input_Off
 	fi
 
@@ -115,7 +115,7 @@ Check_Installer_Stucture()
 {
 	Output_Off hdiutil attach "$installer_sharedsupport_path"/InstallESD.dmg -mountpoint /tmp/InstallESD -nobrowse
 
-	echo -e ${text_progress}"> Checking installer structure."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking installer structure."${erase_style}
 
 		if [[ -e /tmp/InstallESD/BaseSystem.dmg ]]; then
 			installer_images_path="/tmp/InstallESD"
@@ -124,45 +124,45 @@ Check_Installer_Stucture()
 			installer_images_path="$installer_sharedsupport_path"
 		fi
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Checked installer structure."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Checked installer structure."${erase_style}
 
 
-	echo -e ${text_progress}"> Mounting installer disk images."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Mounting installer disk images."${erase_style}
 
 		Output_Off hdiutil attach "$installer_images_path"/BaseSystem.dmg -mountpoint /tmp/Base\ System -nobrowse
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Mounted installer disk images."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Mounted installer disk images."${erase_style}
 }
 
 Check_Installer_Version()
 {
-	echo -e ${text_progress}"> Checking installer version."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking installer version."${erase_style}
 
 		installer_version="$(defaults read /tmp/Base\ System/System/Library/CoreServices/SystemVersion.plist ProductVersion)"
 		installer_version_short="$(defaults read /tmp/Base\ System/System/Library/CoreServices/SystemVersion.plist ProductVersion | cut -c-5)"
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Checked installer version."${erase_style}	
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Checked installer version."${erase_style}	
 }
 
 Input_Volume()
 {
-	echo -e ${text_message}"/ What volume would you like to use?"${erase_style}
-	echo -e ${text_message}"/ Input a volume name."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ What volume would you like to use?"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Input a volume name."${erase_style}
 
 	for volume_path in /Volumes/*; do
 		volume_name="${volume_path#/Volumes/}"
 	
 		if [[ ! "$volume_name" == com.apple* ]]; then
-			echo -e ${text_message}"/     ${volume_name}"${erase_style} | sort
+			echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     ${volume_name}"${erase_style} | sort
 		fi
 
 	done
 
 	if [[ "$installer_volume_name" ]]; then
-		echo -e "/ $installer_volume_name"${erase_style}
+		echo -e $(date "+%b %m %H:%M:%S") "/ $installer_volume_name"${erase_style}
 	else
 		Input_On
-		read -e -p "/ " installer_volume_name
+		read -e -p "$(date "+%b %m %H:%M:%S") / " installer_volume_name
 		Input_Off
 	fi
 
@@ -171,17 +171,17 @@ Input_Volume()
 
 Create_Installer_Media()
 {
-	echo -e ${text_progress}"> Erasing installer volume."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Erasing installer volume."${erase_style}
 
 		Output_Off diskutil eraseVolume HFS+ "$installer_application_name_partial" "$installer_volume_path"
 
 		installer_volume_name="$installer_application_name_partial"
 		installer_volume_path="/Volumes/$installer_volume_name"
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Erased installer volume."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Erased installer volume."${erase_style}
 
 
-	echo -e ${text_progress}"> Creating installer folders."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Creating installer folders."${erase_style}
 
 		mkdir -p "$installer_volume_path"/Library/Preferences/SystemConfiguration
 		mkdir -p "$installer_volume_path"/System/Library/CoreServices
@@ -206,10 +206,10 @@ Create_Installer_Media()
 		chflags hidden "$installer_volume_path"/usr
 
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Created installer folders."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Created installer folders."${erase_style}
 		
 
-	echo -e ${text_progress}"> Copying installer files."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Copying installer files."${erase_style}
 
 		cp -R "$installer_application_path" "$installer_volume_path"/
 
@@ -248,10 +248,10 @@ Create_Installer_Media()
 		cp /tmp/Base\ System/System/Library/CoreServices/PlatformSupport.plist "$installer_volume_path"/System/Library/CoreServices
 		cp /tmp/Base\ System/System/Library/CoreServices/SystemVersion.plist "$installer_volume_path"/System/Library/CoreServices
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Copied installer files."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Copied installer files."${erase_style}
 
 
-	echo -e ${text_progress}"> Creating installer files."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Creating installer files."${erase_style}
 
 		if [[ $installer_version_short == "10.9." || $installer_version_short == "10.10" ]]; then
 			echo -e "<?xml version="1.0" encoding="UTF-8"?>
@@ -306,15 +306,15 @@ Create_Installer_Media()
 
 		touch "$installer_volume_path"/.metadata_never_index
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Created installer files."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Created installer files."${erase_style}
 
 
-	echo -e ${text_progress}"> Unmounting installer disk images."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Unmounting installer disk images."${erase_style}
 
 		Output_Off hdiutil detach /tmp/Base\ System
 		Output_Off hdiutil detach /tmp/InstallESD
 
-	echo -e ${move_up}${erase_line}${text_success}"+ Unmounted installer disk images."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Unmounted installer disk images."${erase_style}
 
 
 	if [[ $installer_version_short == "10.9." || $installer_version_short == "10.1"[0-2] ]]; then
@@ -329,7 +329,7 @@ Create_Installer_Media()
 
 End()
 {
-	echo -e ${text_message}"/ Thank you for using openinstallmedia."${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Thank you for using openinstallmedia."${erase_style}
 
 	Input_On
 	exit
